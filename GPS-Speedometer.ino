@@ -54,7 +54,7 @@ static unsigned long lastAdjustmentActivityTime = 0;
 const unsigned long adjustmentTimeout = 5000; // 5 seconds for timeout
 
 // --- GPS Time Offset Variables ---
-static int timeOffsetHours = 0;   // Offset in hours from GPS (UTC) time
+static int timeOffsetHours = +2;   // Offset in hours from GPS (UTC) time
 
 // --- RTC for NVRAM Storage ---
 RTC_DS1307 rtc;
@@ -414,7 +414,7 @@ void loop() {
     // --- MODIFIED: "No GPS Time" message now also checks RTC plausibility ---
     if (strcmp(timeStr, "--:--") == 0) { // If time couldn't be determined from GPS or RTC
         u8g2.setFont(u8g2_font_6x13_tr);
-        const char* message = "No Time"; // Default message if no GPS & no RTC
+        const char* message = ""; // Default message if no GPS & no RTC
         if (rtcFound && rtc.now().year() < 2000) { // If RTC found but its time is garbage
             message = "RTC Not Set";
         } else if (!gps.time.isValid() && !rtcFound) { // If no GPS & no RTC module
